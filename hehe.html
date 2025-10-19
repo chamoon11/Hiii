@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Selamat Pagi</title>
+  <style>
+    :root{--bg:#fff8f2;--panel:#fff;--accent:#ff6b91}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(180deg,#FFFDF4 0%,#FFF0EE 100%);color:#333}
+    .card{width:min(720px,92vw);background:var(--panel);border-radius:16px;padding:32px;box-shadow:0 10px 30px rgba(0,0,0,0.08);text-align:center;position:relative;overflow:hidden}
+    h1{margin:0 0 8px;font-size:20px}
+    p.lead{margin:0 0 20px;color:#666}
+    .btn{display:inline-block;padding:12px 20px;border-radius:999px;background:linear-gradient(90deg,var(--accent),#ff8fb1);color:white;font-weight:600;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(255,107,145,0.24);transition:transform .12s ease}
+    .btn:active{transform:translateY(1px)}
+
+    .stage{min-height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;transition:opacity .6s ease}
+    .stage.hide{opacity:0;pointer-events:none}
+    .message{font-size:18px;opacity:0;transform:translateY(8px);transition:all .45s cubic-bezier(.2,.9,.25,1)}
+    .message.show{opacity:1;transform:translateY(0)}
+
+    .romantic{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;background:linear-gradient(180deg,rgba(255,255,255,0.0),rgba(255,240,246,0.6));pointer-events:none;opacity:0;transition:opacity .7s ease;z-index:10}
+    .romantic.visible{opacity:1;pointer-events:auto}
+    .romantic .big{font-size:22px;font-weight:700;margin-bottom:8px}
+    .romantic .small{color:#6b5268}
+
+    @media (max-width:420px){.card{padding:20px}}
+  </style>
+</head>
+<body>
+  <div class="card" role="region" aria-label="Selamat pagi">
+    <div class="stage" id="stage">
+      <h1 id="title">Pagi–pagi gini nih</h1>
+      <p class="lead">Klik tombol di bawah ini yaaa, aku maksa hehe</p>
+      <button id="doBtn" class="btn">Klik dulu deh</button>
+      <p id="playful" class="message" aria-live="polite"></p>
+    </div>
+
+    <div class="romantic" id="romanticPanel" aria-hidden="true">
+      <div class="big" id="romanticText">Haloooo, selamat pagi kamuu</div>
+      <div class="small" id="romanticSub">semoga harinya lancar yaa, semoga harimu indah, jangan lupa banyak senyum yaa 💫</div>
+    </div>
+  </div>
+
+  <script>
+    const playfulLine = "Udah klik aja ya, dasar penasaran 😝";
+    const punchlineDelay = 1200;
+
+    const romanticTitle = "Haloooo, selamat pagi kamuu";
+    const romanticSubtitle = "semoga harinya lancar yaa, semoga harimu indah, jangan lupa banyak senyum yaa 💫";
+
+    const btn = document.getElementById('doBtn');
+    const stage = document.getElementById('stage');
+    const playful = document.getElementById('playful');
+    const romantic = document.getElementById('romanticPanel');
+    const romanticText = document.getElementById('romanticText');
+    const romanticSub = document.getElementById('romanticSub');
+
+    btn.addEventListener('click', () => {
+      stage.classList.add('hide');
+      playful.textContent = playfulLine;
+      playful.classList.add('show');
+      btn.textContent = '...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        romanticText.textContent = romanticTitle;
+        romanticSub.textContent = romanticSubtitle;
+        romantic.classList.add('visible');
+        romantic.setAttribute('aria-hidden','false');
+        btn.textContent = 'Dikirim icaaa';
+      }, punchlineDelay + 700);
+    });
+
+    document.getElementById('title').addEventListener('dblclick', e => {
+      const t = prompt('Edit judul cepat:', e.target.textContent);
+      if(t) e.target.textContent = t;
+    });
+
+    btn.addEventListener('keyup', e => { if(e.key === 'Enter' || e.key === ' ') btn.click(); });
+  </script>
+</body>
+</html>
